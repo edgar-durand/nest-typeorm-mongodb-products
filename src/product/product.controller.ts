@@ -201,7 +201,7 @@ export class ProductController {
   subscribe(
     @Param('id') productId,
     @Body() { qty },
-    @Request() { userId },
+    @Request() { user: { userId } },
   ): Promise<IResponse> {
     return this.productService.subscribe({ qty, productId, userId });
   }

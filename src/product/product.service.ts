@@ -105,6 +105,7 @@ export class ProductService {
         updateDTO.stock > 0
       ) {
         const notifications = [];
+        const indexToDelete = [];
         let qty = 0;
         currentProduct.subscribers
           .forEach((subscription, index) => {
@@ -113,11 +114,12 @@ export class ProductService {
             qty += subscription.qty;
             if (qty <= updateDTO.stock) {
               notifications.push(sendUserNotification(subscription.email, currentProduct.name));
-              currentProduct.subscribers.splice(index, 1);
+              indexToDelete.push(subscription.email);
             }
 
           });
         await Promise.all(notifications);
+        currentProduct.subscribers = currentProduct.subscribers.filter((subs) => !indexToDelete.includes(subs.email));
         await manager.save(currentProduct);
       }
       return responseToInterface();
