@@ -20,33 +20,31 @@ import { ProductModule } from './product/product.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule.forRoot()],
       useFactory: (configService: ConfigService) => {
+        const isDevelopment = (): boolean => String(process.env.NODE_ENV) === 'development';
         Logger.log({ 'NODE_ENV ': configService.get('NODE_ENV') })
         return {
           type: 'mongodb',
           url: configService.get('DB_URL'),
-          ssl: String(process.env.NODE_ENV) !== 'development',
-          w: String(process.env.NODE_ENV) === 'development' ? null : 'majority',
-          authSource: String(process.env.NODE_ENV) === 'development' ? null :  'admin',
-          username:
-            String(process.env.NODE_ENV) === 'development'
+          ssl: !isDevelopment(),
+          w: isDevelopment() ? null : 'majority',
+          authSource: isDevelopment() ? null :  'admin',
+          username: isDevelopment()
               ? null
               : configService.get('DB_USER'),
-          password:
-            String(process.env.NODE_ENV) === 'development'
+          password: isDevelopment()
               ? null
               : configService.get('DB_USER'),
-          replicaSet:
-            String(process.env.NODE_ENV) === 'development'
+          replicaSet: isDevelopment()
               ? null
               : 'TestCluster0-shard-0',
           database: configService.get('DB_NAME'),
-          synchronize: String(process.env.NODE_ENV) === 'development',
+          synchronize: isDevelopment(),
           useNewUrlParser: true,
           autoLoadEntities: true,
           namingStrategy: new SnakeNamingStrategy(),
           legacySpatialSupport: false,
           useUnifiedTopology: true,
-          logging: String(process.env.NODE_ENV) === 'development' ? ['query', 'error'] : null,
+          logging: isDevelopment() ? ['query', 'error'] : null,
         };
       },
       inject: [ConfigService],
