@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  products:
+    image: test:latest
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    container_name: products
+    hostname: localhost
+    expose:
+      - 3000
+    ports:
+      - 8080:3000
+
