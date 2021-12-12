@@ -162,8 +162,8 @@ export class ProductController {
   }
 
   @ApiOperation({
-    summary: 'List products',
-    description: 'Returns the list of all products with search filter.'
+    summary: 'Subscribe for product',
+    description: 'Subscribe for product and get an email once available in stock'
   })
   @ApiResponse({
     status: 200, description: 'Success-Response',
