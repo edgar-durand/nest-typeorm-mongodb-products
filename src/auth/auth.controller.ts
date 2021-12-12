@@ -63,40 +63,6 @@ export class AuthController {
   }
 
   @ApiOperation({
-    summary: 'Renew Token',
-    description:
-      'Renew user access token',
-  })
-  @ApiBody({
-    description: 'Refresh Token',
-    schema: {
-      example: {
-        refreshToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOi.......',
-      },
-    },
-  })
-  @ApiResponse({ status: 401, description: 'Unauthorized.' })
-  @ApiResponse({
-    status: 200, description: 'Success response',
-    schema: {
-      example: {
-        'result': true,
-        data: {
-          token: 'eyJ0eXAiOiJKV1QiLCJhbGciOi.......',
-          errors: [],
-          message: 'success',
-        },
-      },
-    },
-  })
-  @Post('refresh-token')
-  renewToken(
-    @Body() { refreshToken },
-  ): Promise<IResponse> {
-    return this.authService.renewToken(refreshToken);
-  }
-
-  @ApiOperation({
     summary: 'Sign out',
     description:
       'Log out user from system',

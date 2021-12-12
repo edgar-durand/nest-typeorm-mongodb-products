@@ -70,25 +70,6 @@ export class AuthService {
     return responseToInterface();
   }
 
-  /**
-   * RENEW TOKEN FOR CURRENT USER
-   *
-   * @param { string } tokenFromRequest
-   */
-  async renewToken(tokenFromRequest: string): Promise<IResponse> {
-    const { data: user } = await this.userService.findByToken(tokenFromRequest);
-    if (!user.id) {
-      throw new UnauthorizedException();
-    }
-    try {
-      const token = this.generateToken(user.id);
-      await this.saveTokenToDB(user._id, token, true);
-      return responseToInterface({ token });
-    } catch (e) {
-      return responseToInterface(null, false, "fail");
-    }
-  }
-
   /***************************************************************************
    *                                VALIDATORS
    **************************************************************************/
